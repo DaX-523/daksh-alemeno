@@ -1,0 +1,19 @@
+{
+  "name": "daksh-alemeno",
+  "version": "1.0.0",
+  "description": "Alemeno assignment by Daksh Dhama",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Daksh Dhama",
+  "license": "ISC",
+  "dependencies": {
+    "bull": "^4.12.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "node-celery": "^0.2.8",
+    "pg": "^8.11.4",
+    "xlsx": "^0.18.5"
+  }
+}
