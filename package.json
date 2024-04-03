@@ -4,6 +4,7 @@
   "description": "Alemeno assignment by Daksh Dhama",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Daksh Dhama",
@@ -14,6 +15,10 @@
     "express": "^4.19.2",
     "node-celery": "^0.2.8",
     "pg": "^8.11.4",
+    "sequelize": "^6.37.2",
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
