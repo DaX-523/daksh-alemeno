@@ -3,18 +3,22 @@ const { sq } = require("../config/database");
 const { DataTypes } = require("sequelize");
 
 const Loan = sq.define("loan", {
-  loan_id: {
+  id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     allowNull: false,
     autoIncrement: true,
   },
+  loan_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   customer_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: "customer",
-      key: "customer_id",
+      model: "customers",
+      key: "id",
     },
   },
   loan_amount: {
@@ -47,13 +51,12 @@ const Loan = sq.define("loan", {
   },
 });
 
-Loan.sync()
-  .then(() => {
-    console.log("Loan model synced");
-    require("./associations");
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+// Loan.sync()
+//   .then(() => {
+//     console.log("Loan model synced");
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
 
 module.exports = Loan;

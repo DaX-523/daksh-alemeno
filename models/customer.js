@@ -3,11 +3,15 @@ const { sq } = require("../config/database");
 const { DataTypes } = require("sequelize");
 
 const Customer = sq.define("customer", {
-  customer_id: {
+  id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     allowNull: false,
     autoIncrement: true,
+  },
+  customer_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
   first_name: {
     type: DataTypes.STRING,
@@ -39,13 +43,12 @@ const Customer = sq.define("customer", {
   },
 });
 
-Customer.sync()
-  .then(() => {
-    console.log("Customer model synced");
-    require("./associations");
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+// Customer.sync()
+//   .then(() => {
+//     console.log("Customer model synced");
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
 
 module.exports = Customer;

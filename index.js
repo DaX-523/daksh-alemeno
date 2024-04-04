@@ -1,21 +1,46 @@
 const express = require("express");
-const dataIngestionQueue = require("./utils/dataIngestionQueue");
 const app = express();
 const port = 9000;
-const { testDbConnection } = require("./config/database");
-const readExcelFile = require("./utils/excelFileParser");
-testDbConnection();
-// console.log(readExcelFile("./public/customer_data.xlsx"));
-// Route to upload files and start the ingestion process
-app.post("/ingest-data", (req, res) => {
-  // Here, you'd get the file path of the uploaded Excel file. This might involve file upload logic.
-  const filePath = "./public/customer_data.xlsx";
+const { testDbConnection, sq } = require("./config/database");
+const ingestRoute = require("./routes/dataIngestion");
+const userRoute = require("./routes/customer");
+const Customer = require("./models/customer");
+const Loan = require("./models/loan");
 
-  dataIngestionQueue.add({ filePath });
+async function syncModels() {
+  try {
+    // Sync the Customer model first to ensure the table is created
+    await Customer.sync();
+    console.log("Customers table created successfully.");
 
-  res.json({ message: "Data ingestion started" });
-});
+    // Then sync the Loan model
+    await Loan.sync();
+    console.log("Loans table created successfully.");
+  } catch (error) {
+    console.error("Failed to create tables:", error);
+  }
+}
 
-app.listen(port, () =>
-  console.log(`App listening at http://localhost:${port}`)
-);
+async function startServer() {
+  try {
+    await syncModels();
+    await sq.sync();
+    require("./models/associations");
+
+    console.log("Models synchronized with the database.");
+    testDbConnection();
+
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
+    app.use("/api/v1", ingestRoute);
+    app.use("/api/v1", userRoute);
+
+    app.listen(port, () =>
+      console.log(`App listening at http://localhost:${port}`)
+    );
+  } catch (error) {
+    console.error("Failed to synchronize models with the database:", error);
+  }
+}
+
+startServer();
