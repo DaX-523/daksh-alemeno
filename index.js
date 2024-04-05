@@ -4,6 +4,8 @@ const port = 9000;
 const { testDbConnection, sq } = require("./config/database");
 const ingestRoute = require("./routes/dataIngestion");
 const userRoute = require("./routes/customer");
+const loanRoute = require("./routes/loan");
+const paymentRoute = require("./routes/payment");
 const Customer = require("./models/customer");
 const Loan = require("./models/loan");
 
@@ -34,6 +36,8 @@ async function startServer() {
     app.use(express.json());
     app.use("/api/v1", ingestRoute);
     app.use("/api/v1", userRoute);
+    app.use("/api/v1", loanRoute);
+    app.use("/api/v1", paymentRoute);
 
     app.listen(port, () =>
       console.log(`App listening at http://localhost:${port}`)
